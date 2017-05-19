@@ -62,7 +62,10 @@ request.get({
        
         res.send(b);
         // console.log(b);
+        if(b != null){
+          
         console.log(b[0].Symbol);
+        }
 });
 });
 
