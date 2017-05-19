@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Markit On Demand Lookup API Demo</title>
+      <link rel="stylesheet" href="stylesheets/main.css" />
+      <link rel="stylesheet" href="stylesheets/demo.css" />
+   </head>
+   <body>
+      <div class="container web">
+         <div class="row content">
+            <div class="span12">
+               <div id="chartDemoContainer" style="height: 500px; min-width: 500px; margin-bottom: 30px;"></div>
+               <div class="well form-inline">
+                  <label>Search for a stock:</label>
+                  <input type="text" id="symbolsearch" class="input-" placeholder="Enter company name or symbol">
+                  <button class="btn btn-default" id="btn-search" onclick="searchStock()">Search</button>
+               </div>
+               <div id="stockButtons" style="margin: 5px;">
+               </div>
+            </div>
+         </div>
+      </div>
+      <script type="text/javascript" src="js/jquery.min.js"></script>
+      <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="js/purl.js"></script>
+      <script src="js/highstock.js"></script>
+      <script src="js/exporting.js"></script>
+      <script src="js/main.js"></script>
+      <script src="/socket.io/socket.io.js"></script>
+      <script src="js/stock.js"></script>
+      <script>
+           function searchStock(){
+               symbol = document.getElementById('symbolsearch').value;
+               symbol = symbol.toUpperCase();
+               $.ajax({
+                 type: 'GET',
+                 url: '/getStocks?inp=' + symbol,
+                 success: function(data){
+                     if(data.length == 0) {
+                         alert("no data");
+                        
+                     }
+                     else {
+                        alert(data[0].Name + "is added");
+                        // notifyMe(data);
+                        socket.emit('chat message', data[0].Symbol);
+                        // console.log('searchStock' + data);
+                     }
+                 }
+               });
+            
+           };
+         
+      </script>
+      <!--<script>-->
+      <!--     document.addEventListener('DOMContentLoaded', function () {-->
+      <!--     if (!Notification) {-->
+      <!--          alert('Desktop notifications not available in your browser. Try Chromium.'); -->
+      <!--          return;-->
+              
+      <!--     }      -->
+      <!--     if (Notification.permission !== "granted")-->
+      <!--     Notification.requestPermission();-->
+              
+      <!--     });-->
+      <!--     function notifyMe(var data) {-->
+      <!--        if (Notification.permission !== "granted")-->
+      <!--        Notification.requestPermission()-->
+      <!--        else {-->
+      <!--           var notification = new Notification('Notification', {-->
+      <!--              icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0c0cYHWUOlyG6jWS__uDevtqebXOwtkRADhNOI7WJbFBP2cE2BxjFyA',-->
+      <!--              body: "Add company "+data[0].Name + "," + "stock code: " + data[0].Symbol,-->
+                    
+      <!--           });-->
+      <!--           notification.onclick = function () {-->
+      <!--              window.open("https://dynamicweb-namhoang18595.c9users.io/");      -->
+                  
+      <!--           };        -->
+                 
+      <!--        }-->
+              
+      <!--     }-->
+      <!--</script>-->
+   </body>
+</html>
